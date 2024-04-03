@@ -1,7 +1,25 @@
 <x-app>
-    <h1>Users</h1>
-    <form action="{{ route('logout') }}" method="POST">
-        @csrf
-        <x-buttons.primary-button type="submit">Log out</x-buttons.primary-button>
-    </form>
+    <div class="p-8 bg-blue-100 h-screen">
+        <div class="flex items-end justify-between my-5">
+            <h1 class="font-bold text-3xl">Users</h1>
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <x-buttons.primary-button type="submit">Log out</x-buttons.primary-button>
+            </form>
+        </div>
+        <table class="border-collapse w-full">
+            <tr class="text-left">
+                <x-table.th>Name</x-table.th>
+                <x-table.th>Email</x-table.th>
+                <x-table.th>Role</x-table.th>
+            </tr>
+            @foreach($users as $user)
+                <tr>
+                    <x-table.td>{{ $user->name }}</x-table.td>
+                    <x-table.td>{{ $user->email }}</x-table.td>
+                    <x-table.td>{{ $user->role }}</x-table.td>
+                </tr>
+            @endforeach
+        </table>
+    </div>
 </x-app>
