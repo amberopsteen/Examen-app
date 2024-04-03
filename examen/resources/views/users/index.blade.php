@@ -1,5 +1,5 @@
 <x-app>
-    <div class="p-8 bg-blue-100 h-screen">
+    <div class="p-8 bg-blue-100 min-h-screen">
         <div class="flex items-end justify-between my-5">
             <h1 class="font-bold text-3xl">Users</h1>
             <div class="flex gap-2 items-end">
@@ -16,6 +16,7 @@
                 <x-table.th>Email</x-table.th>
                 <x-table.th>Role</x-table.th>
                 <x-table.th>Show</x-table.th>
+                <x-table.th>Edit</x-table.th>
                 <x-table.th>Delete</x-table.th>
             </tr>
             @foreach($users as $user)
@@ -25,6 +26,9 @@
                     <x-table.td>{{ $user->role }}</x-table.td>
                     <x-table.td>
                         <x-buttons.primary-link :href="route('users.show', $user->id)">Show</x-buttons.primary-link>
+                    </x-table.td>
+                    <x-table.td>
+                        <x-buttons.primary-link :href="route('users.edit', $user->id)">Edit</x-buttons.primary-link>
                     </x-table.td>
                     <x-table.td>
                         <form id="delete" action="{{ route('users.destroy', $user->id) }}" method="POST"
