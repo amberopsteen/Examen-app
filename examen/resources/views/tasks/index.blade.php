@@ -61,7 +61,7 @@
                                     <div class="flex justify-between items-end">
                                         <div>
                                             <button class="bg-white text-buttonGrey py-0.5 px-2 mt-2 rounded-lg" onclick="editTask(${id})">Edit</button>
-                                            <button class="bg-red-600 text-white py-0.5 px-2 mt-2 rounded-lg" onclick="softDeleteTask(${id})">Soft Delete</button>
+                                            <button class="bg-red-600 text-white py-0.5 px-2 mt-2 rounded-lg" onclick="softDeleteTask(${id})">Archiving</button>
                                             <button class="bg-red-600 text-white py-0.5 px-2 mt-2 rounded-lg" onclick="forceDeleteTask(${id})">Delete</button>
                                             <form id="softDeleteForm-${id}" action="/tasks/${id}" method="POST">
                                             @csrf
