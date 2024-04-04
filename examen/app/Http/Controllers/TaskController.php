@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreTaskRequest;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,7 +25,7 @@ class TaskController extends Controller
             $tasks = Task::all();
         }
 
-        return view('tasks.index', compact('tasks', 'filter'));
+        return view('tasks.index', compact('tasks'));
     }
 
     /**
@@ -32,7 +33,7 @@ class TaskController extends Controller
      */
     public function create()
     {
-        //
+        return view('tasks.create');
     }
 
     /**
@@ -40,7 +41,16 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $task = new Task([
+            'title' => $request->input('title'),
+            'description' => $request->input('description'),
+            'start_datetime' => $request->input('start_datetime'),
+            'end_datetime' => $request->input('end_datetime'),
+        ]);
+
+        Auth::user()->tasks()->save($task);
+
+        return redirect()->route('tasks.index');
     }
 
     /**
