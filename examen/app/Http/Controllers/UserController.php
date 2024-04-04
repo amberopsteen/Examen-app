@@ -6,6 +6,7 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class UserController extends Controller
 {
@@ -18,6 +19,10 @@ class UserController extends Controller
             return redirect()->route('login');
         }
 
+        if (!Gate::allows('access-admin-dashboard')) {
+            abort(403);
+        }
+
         $users = User::all();
 
         return view('users.index', compact('users'));
@@ -28,8 +33,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        if (!Auth::check()) {
-            return redirect()->route('login');
+        if (!Auth::check() || !Gate::allows('access-admin-dashboard')) {
+            abort(403);
         }
 
         return view('users.create');
@@ -40,8 +45,8 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        if (!Auth::check()) {
-            return redirect()->route('login');
+        if (!Auth::check() || !Gate::allows('access-admin-dashboard')) {
+            abort(403);
         }
 
         User::create([
@@ -59,8 +64,8 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        if (!Auth::check()) {
-            return redirect()->route('login');
+        if (!Auth::check() || !Gate::allows('access-admin-dashboard')) {
+            abort(403);
         }
 
         return view('users.show', compact('user'));
@@ -71,8 +76,8 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        if (!Auth::check()) {
-            return redirect()->route('login');
+        if (!Auth::check() || !Gate::allows('access-admin-dashboard')) {
+            abort(403);
         }
 
         return view('users.edit', compact('user'));
@@ -83,9 +88,10 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        if (!Auth::check()) {
-            return redirect()->route('login');
+        if (!Auth::check() || !Gate::allows('access-admin-dashboard')) {
+            abort(403);
         }
+
         $user->update([
             'name' => $request->name,
             'email' => $request->email,
@@ -101,8 +107,8 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        if (!Auth::check()) {
-            return redirect()->route('login');
+        if (!Auth::check() || !Gate::allows('access-admin-dashboard')) {
+            abort(403);
         }
 
         $user->delete();
