@@ -16,6 +16,9 @@ class AuthController extends Controller
     {
         $credentials = $request->only('email', 'password');
 
+//        If the credentials are correct, then it checks what role the user has.
+//        If the user is a admin, it goes to users dashboard. Else the user goes to the tasks dashboard.
+//        If the credentials are incorrect, then user gets a message with invalid credentials.
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
 

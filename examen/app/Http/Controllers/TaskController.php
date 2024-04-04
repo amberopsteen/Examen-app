@@ -15,6 +15,7 @@ class TaskController extends Controller
     {
         $user = Auth::user();
 
+//      Filter function to filter if you want to see you own tasks else you see all the tasks from all the users
         $filter = $request->input('filter', 'all');
 
         if ($filter === 'own') {
