@@ -53,16 +53,30 @@
                             const overlayTasks = `
                             <div id="overlay" class="fixed top-0 left-0 w-full h-full z-50 p-10">
                                 <div class="absolute top-2/4 left-2/4 p-5 bg-blue-100 opacity-8 rounded-lg max-w-lg">
-                                <h2 class="text-xl font-bold">${title}</h2>
-                                <p><span class="font-bold">Description:</span> ${description}</p>
-                                <p><span class="font-bold">User:</span> ${user}</p>
-                                <p><span class="font-bold">Start Date:</span> ${startDatetime}</p>
-                                <p><span class="font-bold">End Date:</span> ${endDatetime}</p>
-                                <button class="bg-white text-buttonGrey py-0.5 px-2 mt-2 rounded-lg" onclick="editTask(${id})">Edit</button>
-                                <button class="px-8 py-1.5 rounded-lg mt-3 bg-blue-300" onclick="closeOverlay()">Close</button>
+                                    <h2 class="text-xl font-bold">${title}</h2>
+                                    <p><span class="font-bold">Description:</span> ${description}</p>
+                                    <p><span class="font-bold">User:</span> ${user}</p>
+                                    <p><span class="font-bold">Start Date:</span> ${startDatetime}</p>
+                                    <p><span class="font-bold">End Date:</span> ${endDatetime}</p>
+                                    <div class="flex justify-between items-end">
+                                        <div>
+                                            <button class="bg-white text-buttonGrey py-0.5 px-2 mt-2 rounded-lg" onclick="editTask(${id})">Edit</button>
+                                            <button class="bg-red-600 text-white py-0.5 px-2 mt-2 rounded-lg" onclick="softDeleteTask(${id})">Soft Delete</button>
+                                            <button class="bg-red-600 text-white py-0.5 px-2 mt-2 rounded-lg" onclick="forceDeleteTask(${id})">Delete</button>
+                                            <form id="softDeleteForm-${id}" action="/tasks/${id}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            </form>
+                                            <form id="forceDeleteForm-${id}" action="{{ route('tasks.forceDestroy', $task) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            </form>
+                                        </div>
+                                        <button class="px-8 py-1.5 rounded-lg mt-3 bg-blue-300" onclick="closeOverlay()">Close</button>
+                                    </div>
                                 </div>
                             </div>
-                            `;
+`;
                             document.body.insertAdjacentHTML('beforeend', overlayTasks);
                         },
                         dateClick: function (info) {
@@ -90,6 +104,16 @@
 
                 function editTask(id) {
                     window.location.href = '/tasks/' + id + '/edit';
+                }
+
+                function softDeleteTask(id) {
+                    document.getElementById(`softDeleteForm-${id}`).submit();
+                }
+
+                function forceDeleteTask(id) {
+                    if (confirm('Are you sure you want to force delete this appointment?')) {
+                        document.getElementById(`forceDeleteForm-${id}`).submit();
+                    }
                 }
 
                 function closeOverlay() {
