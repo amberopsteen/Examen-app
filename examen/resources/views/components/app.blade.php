@@ -8,5 +8,6 @@
 </head>
 <body>
 {{$slot}}
+@yield('scripts')
 </body>
 </html>

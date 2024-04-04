@@ -2,16 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('tasks.index');
+        $user = Auth::user();
+
+        $filter = $request->input('filter', 'all');
+
+        if ($filter === 'own') {
+            $tasks = $user->tasks;
+        } else {
+            $tasks = Task::all();
+        }
+
+        return view('tasks.index', compact('tasks', 'filter'));
     }
 
     /**
@@ -26,14 +38,6 @@ class TaskController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
     {
         //
     }

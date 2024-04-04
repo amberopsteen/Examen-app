@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -14,6 +14,10 @@ class UserController extends Controller
      */
     public function index()
     {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
         $users = User::all();
 
         return view('users.index', compact('users'));
@@ -24,6 +28,10 @@ class UserController extends Controller
      */
     public function create()
     {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
         return view('users.create');
     }
 
@@ -32,6 +40,10 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
         User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -47,6 +59,10 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
         return view('users.show', compact('user'));
     }
 
@@ -55,6 +71,10 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
         return view('users.edit', compact('user'));
     }
 
@@ -63,6 +83,9 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
         $user->update([
             'name' => $request->name,
             'email' => $request->email,
@@ -78,6 +101,10 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
         $user->delete();
 
         return redirect()->route('users.index');
