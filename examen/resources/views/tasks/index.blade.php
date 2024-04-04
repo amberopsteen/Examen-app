@@ -58,6 +58,7 @@
                                 <p><span class="font-bold">User:</span> ${user}</p>
                                 <p><span class="font-bold">Start Date:</span> ${startDatetime}</p>
                                 <p><span class="font-bold">End Date:</span> ${endDatetime}</p>
+                                <button class="bg-white text-buttonGrey py-0.5 px-2 mt-2 rounded-lg" onclick="editTask(${id})">Edit</button>
                                 <button class="px-8 py-1.5 rounded-lg mt-3 bg-blue-300" onclick="closeOverlay()">Close</button>
                                 </div>
                             </div>
@@ -85,6 +86,10 @@
                         timeZoneName: 'short'
                     };
                     return new Date(date).toLocaleString('en-US', options);
+                }
+
+                function editTask(id) {
+                    window.location.href = '/tasks/' + id + '/edit';
                 }
 
                 function closeOverlay() {
