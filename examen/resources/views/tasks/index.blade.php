@@ -63,6 +63,10 @@
                             </div>
                             `;
                             document.body.insertAdjacentHTML('beforeend', overlayTasks);
+                        },
+                        dateClick: function (info) {
+                            const selectedDate = info.dateStr;
+                            window.location.href = '/tasks/create?date=' + selectedDate;
                         }
                     });
                     calendar.render();
