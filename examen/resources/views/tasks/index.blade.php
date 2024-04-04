@@ -31,15 +31,61 @@
                             {
                                 title: '{{ $task->title }}',
                                 description: '{{ $task->description }}',
+                                @if($task->users->isNotEmpty())
+                                user: '{{ $task->users->first()->name }}',
+                                @endif
                                 start: '{{ $task->start_datetime }}',
                                 end: '{{ $task->end_datetime }}',
                                 id: '{{ $task->id }}'
                             },
                             @endforeach
                         ],
+
+                        eventClick: function (info) {
+                            const title = info.event.title;
+                            const description = info.event.extendedProps.description;
+                            const user = info.event.extendedProps.user;
+                            const startDatetime = formatDate(info.event.start);
+                            const endDatetime = formatDate(info.event.end);
+                            const id = info.event.id;
+
+                            // A overlay where you can find the details of a task
+                            const overlayTasks = `
+                            <div id="overlay" class="fixed top-0 left-0 w-full h-full z-50 p-10">
+                                <div class="absolute top-2/4 left-2/4 p-5 bg-blue-100 opacity-8 rounded-lg max-w-lg">
+                                <h2 class="text-xl font-bold">${title}</h2>
+                                <p><span class="font-bold">Description:</span> ${description}</p>
+                                <p><span class="font-bold">User:</span> ${user}</p>
+                                <p><span class="font-bold">Start Date:</span> ${startDatetime}</p>
+                                <p><span class="font-bold">End Date:</span> ${endDatetime}</p>
+                                <button class="px-8 py-1.5 rounded-lg mt-3 bg-blue-300" onclick="closeOverlay()">Close</button>
+                                </div>
+                            </div>
+                            `;
+                            document.body.insertAdjacentHTML('beforeend', overlayTasks);
+                        }
                     });
                     calendar.render();
                 });
+
+                // function to format the date
+                function formatDate(date) {
+                    const options = {
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: true,
+                        timeZoneName: 'short'
+                    };
+                    return new Date(date).toLocaleString('en-US', options);
+                }
+
+                function closeOverlay() {
+                    document.getElementById('overlay').remove();
+                }
             </script>
         @endsection
     </div>
