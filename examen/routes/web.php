@@ -25,3 +25,4 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::resource('tasks', TaskController::class);
 Route::resource('users', UserController::class);
+Route::delete('/tasks/{task}/force-delete', [TaskController::class, 'forceDestroy'])->name('tasks.forceDestroy');

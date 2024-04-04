@@ -18,9 +18,9 @@ class TaskUserSeeder extends Seeder
 
         foreach ($tasks as $task) {
 
-            $users = User::inRandomOrder()->take(rand(1, 5))->get();
+            $user = User::inRandomOrder()->first();
 
-            $task->users()->attach($users);
+            $task->users()->sync([$user->id]);
         }
     }
 }
