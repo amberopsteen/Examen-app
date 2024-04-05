@@ -1,5 +1,5 @@
-describe('Editing of a task by user', () => {
-    it('User edits task', () => {
+describe('User deletes task', () => {
+    it('User deletes a task', () => {
         cy.visit('http://127.0.0.1:8000/')
         cy.get('input[type="email"]').type('user@example.com');
         cy.get('input[type="password"]').type('rootroot');
@@ -12,14 +12,12 @@ describe('Editing of a task by user', () => {
             const randomTask = $tasks[randomIndex];
             cy.wrap(randomTask).click();
         });
-        cy.contains('button', 'Edit').click();
-        cy.get('input[name="title"]').clear().type('testtest');
-        cy.get('input[name="description"]').clear().type('This is a test for editing');
-        cy.contains('button', 'Edit').click();
+
+        // because Cypress doesn't handle JavaScript alerts and confirmation dialogs, the test is written like this to make it look like I clicked Ok
+        cy.on('window:confirm', () => true);
+        cy.contains('button', 'Delete').click();
     })
-
-
-    it('User edits task with invalid information', () => {
+    it('User deletes a task but canceled it', () => {
         cy.visit('http://127.0.0.1:8000/')
         cy.get('input[type="email"]').type('user@example.com');
         cy.get('input[type="password"]').type('rootroot');
@@ -32,14 +30,13 @@ describe('Editing of a task by user', () => {
             const randomTask = $tasks[randomIndex];
             cy.wrap(randomTask).click();
         });
-        cy.contains('button', 'Edit').click();
-        cy.get('input[name="title"]').clear().type('testtest');
-        cy.get('input[name="description"]').clear().type('This is a test for editing');
-        cy.get('input[name="start_datetime"]').clear().type('2024-04-11T11:00');
-        cy.get('input[name="end_datetime"]').clear().type('2024-04-11T10:00');
-        cy.contains('button', 'Edit').click();
-    });
-    it('User tries to edit task of other user', () => {
+
+        // because Cypress doesn't handle JavaScript alerts and confirmation dialogs, the test is written like this to make it look like I clicked Cancel
+        cy.on('window:confirm', () => false);
+        cy.contains('button', 'Delete').click();
+        cy.contains('button', 'Close').click();
+    })
+    it('User tries to delete a task from a other user', () => {
         cy.visit('http://127.0.0.1:8000/')
         cy.get('input[type="email"]').type('user@example.com');
         cy.get('input[type="password"]').type('rootroot');
@@ -54,7 +51,11 @@ describe('Editing of a task by user', () => {
             const randomIndex = Math.floor(Math.random() * tasksOfOtherUsers.length);
             const randomTask = tasksOfOtherUsers[randomIndex];
             cy.wrap(randomTask).click();
-            cy.contains('button', 'Edit').click();
-        });
+
+            // because Cypress doesn't handle JavaScript alerts and confirmation dialogs, the test is written like this to make it look like I clicked Cancel
+            cy.on('window:confirm', () => true);
+            cy.contains('button', 'Delete').click();
+            cy.contains('button', 'Close').click();
+        })
     })
 })

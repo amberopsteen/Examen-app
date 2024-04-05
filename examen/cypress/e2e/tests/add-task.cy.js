@@ -12,7 +12,7 @@ describe('Creation of a new task by user', () => {
         cy.get('input[name="end_datetime"]').type('2024-04-11T10:00');
         cy.get('button[type="submit"]').click();
     })
-    it('User creates new task with valid information', () => {
+    it('User creates new task with invalid information', () => {
         cy.visit('http://127.0.0.1:8000/')
         cy.get('input[type="email"]').type('user@example.com');
         cy.get('input[type="password"]').type('rootroot');

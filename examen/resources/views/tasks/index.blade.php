@@ -61,12 +61,12 @@
                                     <div class="flex justify-between items-end">
                                          <div>
                                          <button class="px-8 py-1.5 rounded-lg mt-3 bg-blue-300" onclick="editTask(${id})">Edit</button>
-                                             <form action="{{ route('tasks.destroy', $task) }}" method="POST" class="inline">
+                                             <form action="{{ route('tasks.destroy', $task) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="bg-red-500 px-8 py-1.5 rounded-lg mt-3 text-white">Archive</button>
                                              </form>
-                                             <form action="{{ route('tasks.forceDestroy', $task) }}" method="POST" class="inline">
+                                             <form action="{{ route('tasks.forceDestroy', $task) }}" method="POST"  onsubmit="return confirm('Are you sure you want to delete ${title}');">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="bg-red-500 px-8 py-1.5 rounded-lg mt-3 text-white">Delete</button>
