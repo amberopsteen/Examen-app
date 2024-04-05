@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Task extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'title',
@@ -17,7 +18,7 @@ class Task extends Model
     ];
 
     protected $dates = ['deleted_at'];
-  
+
     public function users()
     {
         return $this->belongsToMany(User::class);
