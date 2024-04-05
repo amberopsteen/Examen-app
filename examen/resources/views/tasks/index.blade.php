@@ -59,23 +59,23 @@
                                     <p><span class="font-bold">Start Date:</span> ${startDatetime}</p>
                                     <p><span class="font-bold">End Date:</span> ${endDatetime}</p>
                                     <div class="flex justify-between items-end">
-                                        <div>
-                                            <button class="bg-white text-buttonGrey py-0.5 px-2 mt-2 rounded-lg" onclick="editTask(${id})">Edit</button>
-                                            <button class="bg-red-600 text-white py-0.5 px-2 mt-2 rounded-lg" onclick="softDeleteTask(${id})">Archiving</button>
-                                            <button class="bg-red-600 text-white py-0.5 px-2 mt-2 rounded-lg" onclick="forceDeleteTask(${id})">Delete</button>
-                                            <form id="softDeleteForm-${id}" action="/tasks/${id}" method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            </form>
-                                            <form id="forceDeleteForm-${id}" action="{{ route('tasks.forceDestroy', $task) }}" method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            </form>
+                                         <div>
+                                         <button class="px-8 py-1.5 rounded-lg mt-3 bg-blue-300" onclick="editTask(${id})">Edit</button>
+                                             <form action="{{ route('tasks.destroy', $task) }}" method="POST" class="inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="bg-red-500 px-8 py-1.5 rounded-lg mt-3 text-white">Archive</button>
+                                             </form>
+                                             <form action="{{ route('tasks.forceDestroy', $task) }}" method="POST" class="inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="bg-red-500 px-8 py-1.5 rounded-lg mt-3 text-white">Delete</button>
+                                             </form>
+                                         </div>
+                                               <button class="px-8 py-1.5 rounded-lg mt-3 bg-blue-300" onclick="closeOverlay()">Close</button>
+                                            </div>
                                         </div>
-                                        <button class="px-8 py-1.5 rounded-lg mt-3 bg-blue-300" onclick="closeOverlay()">Close</button>
                                     </div>
-                                </div>
-                            </div>
 `;
                             document.body.insertAdjacentHTML('beforeend', overlayTasks);
                         },
@@ -104,16 +104,6 @@
 
                 function editTask(id) {
                     window.location.href = '/tasks/' + id + '/edit';
-                }
-
-                function softDeleteTask(id) {
-                    document.getElementById(`softDeleteForm-${id}`).submit();
-                }
-
-                function forceDeleteTask(id) {
-                    if (confirm('Are you sure you want to force delete this appointment?')) {
-                        document.getElementById(`forceDeleteForm-${id}`).submit();
-                    }
                 }
 
                 function closeOverlay() {

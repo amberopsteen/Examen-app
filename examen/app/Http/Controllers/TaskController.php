@@ -96,7 +96,7 @@ class TaskController extends Controller
             abort(403);
         }
 
-        $task->users()->detach(Auth::id());
+        $task->delete();
 
         return redirect()->route('tasks.index');
     }
